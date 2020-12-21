@@ -1,5 +1,5 @@
 //Commons
-import {IMAGES} from '../commons';
+import {IMAGES, COLORS} from '../commons';
 
 import React, { Component } from 'react';
 import { Animated, View, StyleSheet, Image, Modal } from 'react-native';
@@ -49,10 +49,9 @@ export default class FlipLoader extends Component {
 
     render() {
         return (
-            <Modal
-                animationType="fade"
-                transparent={true}
+            <View
                 visible={true}
+		style={{position:'absolute', height:'100%', width:'100%', top:0, left:0, backgroundColor:COLORS.LOADER_BG_COLOR, zIndex:3}}
             >
                 <View
                     style={styles.container}
@@ -67,7 +66,7 @@ export default class FlipLoader extends Component {
                     </Animated.View>
 
                 </View>
-            </Modal>
+            </View>
         );
     }
 }
