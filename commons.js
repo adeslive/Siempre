@@ -2,19 +2,25 @@ const STRINGS = {
     TITLE: 'Siempre',
     SCREENS: {
         HOME: 'Siempre',
-        ABOUT: "About",
+        ABOUT: "Offers",
         EXIT: "Exit"
     },
 }
 
 const URLS = {
     ROOT:"https://webstore.ftssol.com/",
-    HOMEPAGE: "https://webstore.ftssol.com/CygnusWebStore_Siempre/",
-    ABOUT_US: "https://webstore.ftssol.com/CygnusWebStore_Siempre/content/4-about-us"
+    HOMEPAGE: "https://webstore.ftssol.com/CygnusWebStore_Siempre/en/",
+    ABOUT_US: "https://siempregrocery.com/offers"
 }
 
 const COLORS = {
-    PRIMARY_COLOR: "#72bd46",
+    PRIMARY_COLOR: "#84c454",
+    WHITE: "#ffffff",
+    BLUE: "#307fe2",
+    YELLOW: "#ffc300",
+    ORANGE: "#f08721",
+    BLACK: "#000000",
+    LOADER_BG_COLOR: 'rgba(255, 255, 255, 1.0)'
 }
 
 const IMAGES = {
@@ -25,7 +31,10 @@ const IMAGES = {
         ARROWS: {
             LEFT: require('./assets/md-left-arrow.png'),
             RIGHT: ''
-        }
+        },
+        HOME: require('./assets/home.png'),
+        ABOUT_US: require('./assets/offer.png'),
+        EXIT: require('./assets/exit.png'),
     }
 }
 

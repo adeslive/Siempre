@@ -20,7 +20,7 @@ export default class Home extends React.Component {
         this.state = {
             title: STRINGS.TITLE,
             url: URLS.HOMEPAGE,
-            loading: true,
+            loading: false,
             hasInternet: true,
             scrolled: false,
             canChange: true,
@@ -81,7 +81,7 @@ export default class Home extends React.Component {
     }
 
     show() {
-        setTimeout(() => this.setState({ loading: false }), 1000);
+        setTimeout(() => this.setState({ loading: false }), 2000);
     }
 
     hide() {
@@ -146,6 +146,10 @@ export default class Home extends React.Component {
 
     }
 
+    currentPage() {
+        return this.state.url;
+    }
+
     navChange = (newNavState) => {
         if (this.state.url !== newNavState.url) {
             this.setState({
@@ -156,11 +160,6 @@ export default class Home extends React.Component {
 
     changeInternetStatus(value) {
         this.setState({ hasInternet: value });
-        if (value === false) {
-            this.show();
-        } else {
-            this.hide();
-        }
     }
 
     checkInternet() {
@@ -175,7 +174,7 @@ export default class Home extends React.Component {
 
     render() {
         const navigation = this.props.navigation;
-        const fixZoom = `const meta = document.createElement('meta'); meta.name="viewport" ;meta.content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"; document.getElementsByTagName('head')[0].appendChild(meta); `;
+        const fixZoom = `const meta = document.createElement('meta'); meta.name="viewport" ;meta.content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"; document.getElementsByTagName('head')[0].appendChild(meta); navigator.location.getCurrentPosition(function(position){console.log(position)}, function(error){}, {})`;
         return (
             <StackNavigator.Navigator
                 screenOptions={{
@@ -200,7 +199,7 @@ export default class Home extends React.Component {
 
                             headerTitleStyle: {
                                 fontWeight: '300',
-                                color: '#ffffff',
+                                color: COLORS.WHITE,
                                 fontSize: 22,
                                 flex: 1,
                                 textAlign: "center"
@@ -210,7 +209,7 @@ export default class Home extends React.Component {
                                 <TouchableOpacity
                                     onPress={navigation.toggleDrawer}>
                                     <Image
-                                        style={{ width: 48, height: 48, resizeMode: 'contain', marginLeft: 4, marginTop: 4, tintColor: "#ffffff" }}
+                                        style={{ width: 48, height: 48, resizeMode: 'contain', marginLeft: 4, marginTop: 4, tintColor: COLORS.WHITE }}
                                         source={IMAGES.MENU.HAMBURGUER} />
                                 </TouchableOpacity>
                             ),
@@ -221,7 +220,7 @@ export default class Home extends React.Component {
                                         onPress={this.Web.goBack}
                                     >
                                         <Image
-                                            style={{ width: 18, height: 18, resizeMode: 'contain', marginLeft: 4, marginTop: 4, marginRight: 16, tintColor: "#ffffff" }}
+                                            style={{ width: 18, height: 18, resizeMode: 'contain', marginLeft: 4, marginTop: 4, marginRight: 16, tintColor: COLORS.WHITE }}
                                             source={IMAGES.MENU.ARROWS.LEFT}
                                         />
                                     </TouchableOpacity>)
@@ -235,6 +234,7 @@ export default class Home extends React.Component {
 
                     
                     {() => (
+			<>
                         <Animated.View style={{ flex: 1, transform: [{ translateY: this.getBodyAnimation() }] }}>
                             {
                                 this.state.hasInternet &&
@@ -246,6 +246,7 @@ export default class Home extends React.Component {
                                     onError={() => this.changeInternetStatus(false)}
                                     onScroll={this.animate.bind(this)}
                                     ref={webview => this.Web = webview}
+                                    geolocationEnabled={true}
                                     onNavigationStateChange={this.navChange}
                                     injectedJavaScript={fixZoom}
                                     showsHorizontalScrollIndicator={false}
@@ -284,8 +285,10 @@ export default class Home extends React.Component {
                                 </View>
                             }
 
-                            {this.state.loading && this.state.hasInternet && <FlipLoader />}
+                            {this.state.loading &&  <FlipLoader />}
                         </Animated.View>
+			
+			</>
                     )}
                 </StackNavigator.Screen>
             </StackNavigator.Navigator>

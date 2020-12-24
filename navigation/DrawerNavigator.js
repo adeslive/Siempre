@@ -1,14 +1,15 @@
 //Commons
-import {STRINGS, URLS} from '../commons'
+import { STRINGS, URLS, IMAGES, COLORS } from '../commons'
 
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Image, Text } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 // Screens
 import Exit from '../screens/Exit';
 import Home from '../screens/Home';
 
+let currentURL = URLS.HOMEPAGE;
 export default class DrawerNavigation extends Component {
     constructor(props) {
         super(props);
@@ -20,68 +21,113 @@ export default class DrawerNavigation extends Component {
 
     render() {
         const Drawer = createDrawerNavigator();
-        const HomeScreen = React.forwardRef((props, ref) => <Home ref={ref => this.homeRef = ref} {...props}/>) 
-        
+        const HomeScreen = React.forwardRef((props, ref) => <Home ref={ref => this.homeRef = ref} {...props} />)
+
         // Currently only the Home screen is being shown
         // To change the webview's current page with the drawers items, just use the first item
         // as an example. To add navigation add a screen and its component.
         return (
             <>
-                {
-                    <Drawer.Navigator
+                <Drawer.Navigator
                     drawerType="slide"
                     backBehavior="initialRoute"
                     initialRouteName={STRINGS.SCREENS.HOME}
                     drawerContent={(props) => (
                         <DrawerContentScrollView {...props}>
-                        
                             <DrawerItem
-                                  label={ STRINGS.SCREENS.HOME }
-                                  onPress={() => {
+                                icon={() =>
+                                    <Image
+                                        style={{
+                                            width: 32,
+                                            height: 32,
+                                            resizeMode: 'contain',
+                                            marginLeft: 4,
+                                            tintColor: currentURL === URLS.HOMEPAGE ? COLORS.PRIMARY_COLOR : COLORS.BLACK
+                                        }}
+                                        source={IMAGES.MENU.HOME} />
+                                }
+                                label={() => <Text style={{ fontSize: 18 }}>{STRINGS.SCREENS.HOME}</Text>}
+                                style={{
+                                    top: 4,
+                                    bottom: 4
+                                }}
+                                onPress={() => {
+                                    currentURL = URLS.HOMEPAGE;
                                     this.homeRef.goTo(URLS.HOMEPAGE);
-                                  }}
+                                }}
                             />
 
                             <DrawerItem
-                                  label={STRINGS.SCREENS.ABOUT}
-                                  onPress={() => {
-                                    const currentURL = this.homeRef.state.url;
-                                    if(currentURL.includes(URLS.ROOT)){
-                                        this.homeRef.goTo(URLS.ABOUT_US);
-                                    }else if(currentURL.includes("harvest.ftssol.com") || currentURL.includes("webstore.ftssol.com")){
-                                        let newURL = currentURL.split("/")
+                                icon={() =>
+                                    <Image
+                                        style={{
+                                            width: 32,
+                                            height: 32,
+                                            resizeMode: 'contain',
+                                            marginLeft: 4,
+                                            tintColor: currentURL === URLS.ABOUT_US ? COLORS.PRIMARY_COLOR : COLORS.BLACK
+                                        }}
+                                        source={IMAGES.MENU.ABOUT_US} />
+                                }
+                                label={() => <Text style={{ fontSize: 18 }}>{STRINGS.SCREENS.ABOUT}</Text>}
+                                style={{
+                                    bottom: 4
+                                }}
+                                onPress={() => {
+                                    let newURL = "";
+                                    if (URLS.ABOUT_US.includes(URLS.ROOT)) {
+                                        newURL = url.split("/")
                                         newURL = newURL[0] + "//" + newURL[2] + "/" + newURL[3] + "/" + newURL[4] + "/content/4-about-us"
-                                        this.homeRef.goTo(newURL);
+                                        
+                                    }else{
+                                        newURL = URLS.ABOUT_US;
                                     }
+                                    
+                                    currentURL = newURL;
+                                    this.homeRef.goTo(newURL);
                                 }}
                             />
 
                             {Platform.OS != "ios" &&
                                 <DrawerItem
-                                    label={STRINGS.SCREENS.EXIT}
+                                    icon={({ focused }) =>
+                                        <Image
+                                            style={{
+                                                width: 32,
+                                                height: 32,
+                                                resizeMode: 'contain',
+                                                marginLeft: 4,
+                                                tintColor: focused ? COLORS.PRIMARY_COLOR : COLORS.BLACK
+                                            }}
+                                            source={IMAGES.MENU.EXIT} />
+                                    }
+                                    label={() => <Text style={{ fontSize: 18 }}>{STRINGS.SCREENS.EXIT}</Text>}
+                                    style={{
+                                        bottom: 4
+                                    }}
                                     onPress={() => props.navigation.jumpTo(STRINGS.SCREENS.EXIT)}
                                 />
                             }
-                        </DrawerContentScrollView> 
+                        </DrawerContentScrollView>
                     )}
-                    >
+                >
 
                     <Drawer.Screen
-                        name={ STRINGS.SCREENS.HOME }
+                        name={STRINGS.SCREENS.HOME}
                     >
-                        {(props) => <HomeScreen ref={ref => this.homeRef = ref} {...props}/>}
+                        {(props) => <HomeScreen ref={ref => this.homeRef = ref} {...props} />}
                     </Drawer.Screen>
 
-                    
+
                     {Platform.OS != "ios" &&
                         <Drawer.Screen
-                            name= { STRINGS.SCREENS.EXIT }
+                            name={STRINGS.SCREENS.EXIT}
                             component={Exit}
                         />
                     }
 
                 </Drawer.Navigator>
-                }
+
             </>
         );
     }
