@@ -20,7 +20,7 @@ const COLORS = {
     YELLOW: "#ffc300",
     ORANGE: "#f08721",
     BLACK: "#000000",
-    LOADER_BG_COLOR: 'rgba(255, 255, 255, 1.0)'
+    LOADER_BG_COLOR: 'rgba(0, 0, 0, 0.05)'
 }
 
 const IMAGES = {
